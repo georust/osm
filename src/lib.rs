@@ -5,7 +5,7 @@ use std::collections::HashMap;
 /// A structure containing all the common attributes
 /// of the basic OSM data types
 /// 
-/// See: https://wiki.openstreetmap.org/wiki/Elements#Common_attributes
+/// See: [OSM wiki - Common attributes](https://wiki.openstreetmap.org/wiki/Elements#Common_attributes)
 pub struct ElementInfo {
     pub id: i64,
     pub user: String,
@@ -20,7 +20,7 @@ pub struct ElementInfo {
 /// They are used to define standalone point features. They are also used for modelling 
 /// a Way or they can be a member of a relation.
 /// 
-/// See: https://wiki.openstreetmap.org/wiki/Node
+/// See: [OSM wiki - Node](https://wiki.openstreetmap.org/wiki/Node)
 pub struct Node {
     pub element_info: ElementInfo,
     pub tags: HashMap<String, String>,
@@ -33,7 +33,7 @@ pub struct Node {
 /// to be areas even without an area=yes tag. Only if the way have the tags highway=* or 
 /// barrier=* they are not considered as an area.
 /// 
-/// See: https://wiki.openstreetmap.org/wiki/Way
+/// See: [OSM wiki - Way](https://wiki.openstreetmap.org/wiki/Way)
 pub struct Way {
     pub element_info: ElementInfo,
     pub tags: HashMap<String, String>,
@@ -58,7 +58,7 @@ pub struct RelationMember {
 /// A Relation is a multi-purpose data structure that is used to define relationship between
 /// multiple other Elements, such as nodes, ways or even other relations. 
 /// 
-/// See: https://wiki.openstreetmap.org/wiki/Relation
+/// See: [OSM wiki - Relation](https://wiki.openstreetmap.org/wiki/Relation)
 pub struct Relation {
     pub element_info: ElementInfo,
     pub tags: HashMap<String, String>,
