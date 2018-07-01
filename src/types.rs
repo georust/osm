@@ -7,12 +7,12 @@ use std::collections::HashMap;
 #[derive(Debug)]
 pub struct ElementInfo {
     pub id: i64,
-    pub user: String,
-    pub uid: i32,
+    pub user: Option<String>,
+    pub uid: Option<i32>,
     pub timestamp: String,
     pub visible: bool,
     pub version: i32,
-    pub changeset: i64
+    pub changeset: Option<i64>
 }
 
 /// A node is a single Point holding `lat` and `lon` coordinates (WGS84 reference). 
