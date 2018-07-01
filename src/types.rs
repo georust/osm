@@ -19,13 +19,16 @@ pub struct ElementInfo {
 /// They are used to define standalone point features. They are also used for modelling 
 /// a Way or they can be a member of a relation.
 /// 
+/// Latitude and longitude are represented as 32-bit integers. Each coordinate is 
+/// multiplied by 1E7 and rounded.
+/// 
 /// See: [OSM wiki - Node](https://wiki.openstreetmap.org/wiki/Node)
 #[derive(Debug)]
 pub struct Node {
     pub element_info: ElementInfo,
     pub tags: HashMap<String, String>,
-    pub lat: &mut f64,
-    pub lon: &mut f64
+    pub lat: i32,
+    pub lon: i32
 }
 
 /// A way is a Polyline that is defined by a ordered list of Nodes. If a Way share the same
