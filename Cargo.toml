@@ -4,3 +4,6 @@ version = "0.1.0"
 authors = ["Corey Farwell <coreyf@rwell.org>"]
 license = "Apache-2.0"
 description = "OSM XML serialization and other OpenStreetMap utilities"
+
+[dependencies]
+chrono = "0.4"

@@ -1,2 +1,2 @@
-mod types;
 mod test;
+mod types;
