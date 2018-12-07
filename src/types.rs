@@ -1,7 +1,9 @@
 extern crate chrono;
+extern crate geo_types;
 
 use self::chrono::{DateTime, Utc};
-use std::collections::HashMap;
+use self::geo_types::Point;
+use std::convert::From;
 
 /// A structure containing all the common attributes
 /// of the basic OSM data types
@@ -60,6 +62,12 @@ impl Node {
     /// the value more efficiently, to f64
     pub fn coord_itof(coord: i32) -> f64 {
         (coord as f64) / 1e7
+    }
+}
+
+impl From<Node> for Point<f64> {
+    fn from(other: Node) -> Point<f64> {
+        Point::new(Node::coord_itof(other.lon), Node::coord_itof(other.lat))
     }
 }
 
@@ -142,5 +150,19 @@ mod test {
         assert_eq!(node_b, node_a);
         assert_ne!(node_a, node_c);
         assert_ne!(node_b, node_c);
+    }
+
+    #[test]
+    fn test_node_to_point() {
+        let mut node = Node {
+            element_info: ElementInfo::create(1),
+            lat: Node::coord_ftoi(51.509865),
+            lon: Node::coord_ftoi(-0.118092),
+        };
+
+        let point = Point::from(node);
+
+        assert_eq!(point.x(), -0.118092f64);
+        assert_eq!(point.y(), 51.509865);
     }
 }

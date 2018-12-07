@@ -7,3 +7,4 @@ description = "OSM XML serialization and other OpenStreetMap utilities"
 
 [dependencies]
 chrono = "0.4"
+geo-types = "^0.3.0"
