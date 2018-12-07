@@ -12,11 +12,26 @@ pub struct ElementInfo {
     pub id: i64,
     pub user: Option<String>,
     pub uid: Option<i32>,
-    pub timestamp: DateTime<Utc>,
-    pub visible: bool,
-    pub version: i32,
+    pub timestamp: Option<DateTime<Utc>>,
+    pub visible: Option<bool>,
+    pub version: Option<i32>,
     pub changeset: Option<i64>,
     pub tags: Vec<String>,
+}
+
+impl ElementInfo {
+    fn create(id: i64) -> ElementInfo {
+        ElementInfo {
+            id: id,
+            user: Option::None,
+            uid: Option::None,
+            timestamp: Option::None,
+            visible: Option::None,
+            version: Option::None,
+            changeset: Option::None,
+            tags: vec![],
+        }
+    }
 }
 
 /// A node is a single Point holding `lat` and `lon` coordinates (WGS84 reference).
@@ -32,6 +47,28 @@ pub struct Node {
     pub element_info: ElementInfo,
     pub lat: i32,
     pub lon: i32,
+}
+
+impl Node {
+    /// Convert latitude or longitude from natural f64 to i32, the
+    /// datatype to store the value more efficiently
+    pub fn coord_ftoi(coord: f64) -> i32 {
+        (coord * 1e7) as i32
+    }
+
+    /// Convert latitude or longitude from i32, the datatype to store
+    /// the value more efficiently, to f64
+    pub fn coord_itof(coord: i32) -> f64 {
+        (coord as f64) / 1e7
+    }
+}
+
+impl PartialEq for Node {
+    fn eq(&self, other: &Node) -> bool {
+        (self.element_info.id == other.element_info.id)
+            && (self.lat == other.lat)
+            && (self.lon == self.lon)
+    }
 }
 
 /// A way is a Polyline that is defined by a ordered list of Nodes. If a Way share the same
@@ -67,4 +104,43 @@ pub struct RelationMember {
 pub struct Relation {
     pub element_info: ElementInfo,
     pub members: Vec<RelationMember>,
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_node_coordinate_conversion() {
+        assert_eq!(Node::coord_itof(515098650), 51.509865);
+        assert_eq!(Node::coord_itof(-1180920), -0.118092);
+        assert_eq!(Node::coord_ftoi(40.730610), 407306100);
+        assert_eq!(Node::coord_ftoi(-73.935242), -739352420);
+    }
+
+    #[test]
+    fn test_node_equality() {
+        let mut node_a = Node {
+            element_info: ElementInfo::create(1),
+            lat: Node::coord_ftoi(51.509865),
+            lon: Node::coord_ftoi(-0.118092),
+        };
+
+        let mut node_b = Node {
+            element_info: ElementInfo::create(1),
+            lat: 515098650,
+            lon: -1180920,
+        };
+
+        let mut node_c = Node {
+            element_info: ElementInfo::create(2),
+            lat: 515098650,
+            lon: -1180920,
+        };
+
+        assert_eq!(node_a, node_b);
+        assert_eq!(node_b, node_a);
+        assert_ne!(node_a, node_c);
+        assert_ne!(node_b, node_c);
+    }
 }
